@@ -24,66 +24,67 @@
 # sunucu güncelleme
 sudo apt update -y && sudo apt upgrade -y
 
-# burada 20 ve 60 saniye bekliyoruz
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+# apt'nin HTTPS üzerinden paket kullanmasına izin veren birkaç önkoşul paketini yükleyin
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
 
-# komutları sırasıyla girelim:
-sudo apt-get install -y nodejs
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm install 16
-nvm use 16
-apt install npm
-sudo npm i -g @kenshi.io/unchained
-sudo npm i -g @kenshi.io/unchained@latest
+# Resmi Docker deposu için GPG anahtarını sisteminize ekleyin
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+# APT kaynaklarına Docker deposunu ekleyin
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+# Yeni eklenen depodan Docker paketleriyle paket veritabanını güncelleyin
+sudo apt update
+
+# Docker'ı yükleyin
+sudo apt install docker-ce
+
+# Docker'ın doğru bir şekilde yüklendiğini doğrulamak için Docker hello-world imajını çalıştırın
+sudo docker run hello-world
+
 ```
 
 <h1 align="center">Yapılandırma işlemleri ve başlatma</h1>
 
 ```console
-# conf.yaml içine girelim
-sudo nano conf.yaml
 
-# burada sadece Rues kısmını kendi adınız yapın - gerisini ben ayarladım
-log: info
-name: Rues
-lite: true
-gossip: 5
-rpc:
-  ethereum:
-    - https://ethereum.publicnode.com
-    - https://eth.llamarpc.com
-    - wss://ethereum.publicnode.com
-    - https://eth.rpc.blxrbdn.com
-database:
-  url: mongodb+srv://<user>:<password>@<url>/?retryWrites=true&w=majority
-  name: unchained
+# KenshiTech Docker dosyasını indirin
+wget https://github.com/KenshiTech/unchained/releases/download/v0.8.10/unchained-v0.8.10-docker.zip
 
-> CTRL X Y Enter ile çıkıyoruz.
+# İndirilen ZIP dosyasını açın
+unzip unchained-v0.8.10-docker.zip
+
+#klasöre girelim
+cd unchained-v0.8.10-docker
+
+#Node başlatmadan önce config dosyamızı kopyalayalım ve değiştirilerim
+cp conf.lite.yaml.template conf.lite.yaml
+
+#name: den sonra mevcut yazıyı silin ve kendi koymak istediğiniz ismi küçüktür işaretleri olmadan yazın
+#örnek, name: hcelalaydin
+nano conf.lite.yaml
+
+#Node başlatma
+./unchained.sh lite up -d
+
+#Burada yazan secret ve public anahtarları bir yere kaydedelim !!!
+cat conf.lite.yaml
 
 
-# Screen içine girelim
-screen -S kenshi
+#Logları görüp çalıştığına emin olalım, yeşil yazılar akacak
+./unchained.sh lite logs -f
 
-# Başlatalım
-unchained start conf.yaml --generate
-
-> CTRL A D ile screenden çıkıyoruz.
+> CTRL C ile loglardan çıkabiliriz.
 
 # Notlar:
 > Son komuttan sonra loglar akmaya başlayacak ve sync olmaya başlayacaksınız
-> 5 dakikada bir gözüken Leaderboard'da siz OLMAYACAKSINIZ
-> Bu leaderboard - sizin node'larınız tarafından diğer nodelara verilen puanlardır
-> Sizde başkaların nodelarından puan alacaksınız - hetzner'iniz varsa kafanız rahat olabilir.
+> node durdurma, "./unchained.sh lite stop"
+ 
+
+
 ```
 
-> WinSCP veya mobaxterm benzeri bir uygulama ile conf.yaml dosyasını yedekleyelim.
 
-> Veya `cat conf.yaml` komut ile çıktıyı kaydedebilirsiniz.
 
-> conf.yaml içinde ki secret key önemli olan.
-
-> Kendinizi [burada](https://charts.mongodb.com/charts-unchained-gpust/public/dashboards/cbb6ccf6-15b2-4187-be56-ff9d2e25a48a) contributions kısmında bulabilirsiniz.
+> Kendinizi [burada](hyyps://kenshi.io/unchained) veya [burada](https://charts.mongodb.com/charts-unchained-gpust/public/dashboards/cbb6ccf6-15b2-4187-be56-ff9d2e25a48a) contributions kısmında bulabilirsiniz.
 
