@@ -21,6 +21,9 @@
 <h1 align="center">Kurulum</h1>
 
 ```console
+#google cloud kullanıyorsanız önce root'a geçebilirsiniz
+sudo su
+
 # sunucu güncelleme
 sudo apt update -y && sudo apt upgrade -y
 
