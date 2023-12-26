@@ -65,7 +65,7 @@ cp conf.lite.yaml.template conf.lite.yaml
 
 #name: den sonra mevcut yazıyı silin ve kendi koymak istediğiniz ismi küçüktür işaretleri olmadan yazın
 #örnek, name: hcelalaydin
-nano conf.lite.yaml
+nano conf.lite.yaml     #Ctrl+x >> y >> enter  tuşlarına sırasıyla basarak çıkalım
 
 #Node başlatma
 ./unchained.sh lite up -d
@@ -89,5 +89,5 @@ cat conf.lite.yaml
 
 
 
-> Kendinizi [burada](hyyps://kenshi.io/unchained) veya [burada](https://charts.mongodb.com/charts-unchained-gpust/public/dashboards/cbb6ccf6-15b2-4187-be56-ff9d2e25a48a) contributions kısmında bulabilirsiniz.
+> Kendinizi [burada](https://kenshi.io/unchained) veya [burada](https://charts.mongodb.com/charts-unchained-gpust/public/dashboards/cbb6ccf6-15b2-4187-be56-ff9d2e25a48a) contributions kısmında bulabilirsiniz.
 
