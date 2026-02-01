@@ -1,0 +1,17 @@
+[project]
+name = "venafi-mcp-server"
+version = "0.1.0"
+description = "MCP Server for Venafi Trust Protection Platform (TPP)"
+dependencies = [
+    "mcp",
+    "pyvenafi",
+    "python-dotenv"
+]
+requires-python = ">=3.10"
+
+[project.scripts]
+venafi-mcp-server = "venafi_mcp_server.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
